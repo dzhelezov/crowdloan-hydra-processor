@@ -1,0 +1,345 @@
+interface BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+}
+
+type BaseModel implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+}
+
+type BaseModelUUID implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+}
+
+input BaseWhereInput {
+  id_eq: String
+  id_in: [String!]
+  createdAt_eq: String
+  createdAt_lt: String
+  createdAt_lte: String
+  createdAt_gt: String
+  createdAt_gte: String
+  createdById_eq: String
+  updatedAt_eq: String
+  updatedAt_lt: String
+  updatedAt_lte: String
+  updatedAt_gt: String
+  updatedAt_gte: String
+  updatedById_eq: String
+  deletedAt_all: Boolean
+  deletedAt_eq: String
+  deletedAt_lt: String
+  deletedAt_lte: String
+  deletedAt_gt: String
+  deletedAt_gte: String
+  deletedById_eq: String
+}
+
+"""GraphQL representation of BigInt"""
+scalar BigInt
+
+type Contribution implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+  account: Contributor!
+  accountId: String!
+  balance: BigInt
+  blockNumber: BigInt!
+  extrinsicHash: String!
+  earlyBird: Boolean
+  prevContributed: Boolean
+  referralCode: String
+}
+
+type ContributionConnection {
+  totalCount: Int!
+  edges: [ContributionEdge!]!
+  pageInfo: PageInfo!
+}
+
+input ContributionCreateInput {
+  account: ID!
+  balance: String
+  blockNumber: String!
+  extrinsicHash: String!
+  earlyBird: Boolean
+  prevContributed: Boolean
+  referralCode: String
+}
+
+type ContributionEdge {
+  node: Contribution!
+  cursor: String!
+}
+
+enum ContributionOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  deletedAt_ASC
+  deletedAt_DESC
+  account_ASC
+  account_DESC
+  balance_ASC
+  balance_DESC
+  blockNumber_ASC
+  blockNumber_DESC
+  extrinsicHash_ASC
+  extrinsicHash_DESC
+  earlyBird_ASC
+  earlyBird_DESC
+  prevContributed_ASC
+  prevContributed_DESC
+  referralCode_ASC
+  referralCode_DESC
+}
+
+input ContributionUpdateInput {
+  account: ID
+  balance: String
+  blockNumber: String
+  extrinsicHash: String
+  earlyBird: Boolean
+  prevContributed: Boolean
+  referralCode: String
+}
+
+input ContributionWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  balance_eq: BigInt
+  balance_gt: BigInt
+  balance_gte: BigInt
+  balance_lt: BigInt
+  balance_lte: BigInt
+  balance_in: [BigInt!]
+  blockNumber_eq: BigInt
+  blockNumber_gt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_lte: BigInt
+  blockNumber_in: [BigInt!]
+  extrinsicHash_eq: String
+  extrinsicHash_contains: String
+  extrinsicHash_startsWith: String
+  extrinsicHash_endsWith: String
+  extrinsicHash_in: [String!]
+  earlyBird_eq: Boolean
+  earlyBird_in: [Boolean!]
+  prevContributed_eq: Boolean
+  prevContributed_in: [Boolean!]
+  referralCode_eq: String
+  referralCode_contains: String
+  referralCode_startsWith: String
+  referralCode_endsWith: String
+  referralCode_in: [String!]
+  account: ContributorWhereInput
+  AND: [ContributionWhereInput!]
+  OR: [ContributionWhereInput!]
+}
+
+input ContributionWhereUniqueInput {
+  id: ID!
+}
+
+type Contributor implements BaseGraphQLObject {
+  id: ID!
+  createdAt: DateTime!
+  createdById: String!
+  updatedAt: DateTime
+  updatedById: String
+  deletedAt: DateTime
+  deletedById: String
+  version: Int!
+  totalContributed: BigInt
+  paraId: Int!
+  countContributions: Int
+  contributions: [Contribution!]!
+}
+
+type ContributorConnection {
+  totalCount: Int!
+  edges: [ContributorEdge!]!
+  pageInfo: PageInfo!
+}
+
+input ContributorCreateInput {
+  totalContributed: String
+  paraId: Float!
+  countContributions: Float
+}
+
+type ContributorEdge {
+  node: Contributor!
+  cursor: String!
+}
+
+enum ContributorOrderByInput {
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  deletedAt_ASC
+  deletedAt_DESC
+  totalContributed_ASC
+  totalContributed_DESC
+  paraId_ASC
+  paraId_DESC
+  countContributions_ASC
+  countContributions_DESC
+}
+
+input ContributorUpdateInput {
+  totalContributed: String
+  paraId: Float
+  countContributions: Float
+}
+
+input ContributorWhereInput {
+  id_eq: ID
+  id_in: [ID!]
+  createdAt_eq: DateTime
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  createdById_eq: ID
+  createdById_in: [ID!]
+  updatedAt_eq: DateTime
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  updatedById_eq: ID
+  updatedById_in: [ID!]
+  deletedAt_all: Boolean
+  deletedAt_eq: DateTime
+  deletedAt_lt: DateTime
+  deletedAt_lte: DateTime
+  deletedAt_gt: DateTime
+  deletedAt_gte: DateTime
+  deletedById_eq: ID
+  deletedById_in: [ID!]
+  totalContributed_eq: BigInt
+  totalContributed_gt: BigInt
+  totalContributed_gte: BigInt
+  totalContributed_lt: BigInt
+  totalContributed_lte: BigInt
+  totalContributed_in: [BigInt!]
+  paraId_eq: Int
+  paraId_gt: Int
+  paraId_gte: Int
+  paraId_lt: Int
+  paraId_lte: Int
+  paraId_in: [Int!]
+  countContributions_eq: Int
+  countContributions_gt: Int
+  countContributions_gte: Int
+  countContributions_lt: Int
+  countContributions_lte: Int
+  countContributions_in: [Int!]
+  contributions_none: ContributionWhereInput
+  contributions_some: ContributionWhereInput
+  contributions_every: ContributionWhereInput
+  AND: [ContributorWhereInput!]
+  OR: [ContributorWhereInput!]
+}
+
+input ContributorWhereUniqueInput {
+  id: ID!
+}
+
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
+
+interface DeleteResponse {
+  id: ID!
+}
+
+type Metrics {
+  totalContributions: Float!
+  totalContributors: Float!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type ProcessorState {
+  lastCompleteBlock: Float!
+  lastProcessedEvent: String!
+  indexerHead: Float!
+  chainHead: Float!
+}
+
+type Query {
+  contributions(offset: Int, limit: Int = 50, where: ContributionWhereInput, orderBy: [ContributionOrderByInput!]): [Contribution!]!
+  contributionByUniqueInput(where: ContributionWhereUniqueInput!): Contribution
+  contributionsConnection(first: Int, after: String, last: Int, before: String, where: ContributionWhereInput, orderBy: [ContributionOrderByInput!]): ContributionConnection!
+  contributors(offset: Int, limit: Int = 50, where: ContributorWhereInput, orderBy: [ContributorOrderByInput!]): [Contributor!]!
+  contributorByUniqueInput(where: ContributorWhereUniqueInput!): Contributor
+  contributorsConnection(first: Int, after: String, last: Int, before: String, where: ContributorWhereInput, orderBy: [ContributorOrderByInput!]): ContributorConnection!
+  metrics: Metrics!
+}
+
+type StandardDeleteResponse {
+  id: ID!
+}
+
+type Subscription {
+  stateSubscription: ProcessorState!
+}

@@ -1,0 +1,25 @@
+version: '3.0'
+description: Test manifest
+repository: https://github.com/
+hydraVersion: ">=4"
+
+typegen:
+  metadata:
+    source: wss://polkadot-rpc.polkadot.io/
+  events:
+    - crowdloan.Contributed
+    - crowdloan.MemoUpdated
+  calls:
+  outDir: chain
+
+mappings:
+  mappingsModule: mappings
+  range: '[9006286, 9006288]'
+  eventHandlers:
+    - event: crowdloan.Contributed
+      handler: processContribution
+    - event: crowdloan.MemoUpdated
+      handler: processMemo
+  extrinsicHandlers:
+  preBlockHooks:
+  postBlockHooks:
