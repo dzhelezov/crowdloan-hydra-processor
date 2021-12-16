@@ -14,7 +14,7 @@ typegen:
 
 mappings:
   mappingsModule: mappings
-  range: '[9006286, 9006288]'
+  range: '[8146654, )'
   eventHandlers:
     - event: crowdloan.Contributed
       handler: processContribution
