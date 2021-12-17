@@ -6,8 +6,8 @@ import { Contributions } from '../chain'
 const altairContributions = require('./altair-contributions.json')
 
 const PARA_ID = 2031;
-const CRWD_START = 9006286; // change to polkadot
-const CRWD_EARLYBIRD_LENGTH = 43200; // (72h * 60m * 60s) / 6s
+const CRWD_START = 8146654;
+const CRWD_EARLYBIRD_LENGTH = 86400; // (144h * 60m * 60s) / 6s
 
 export async function processContribution({
   store,
