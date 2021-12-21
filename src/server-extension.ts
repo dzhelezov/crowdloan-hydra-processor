@@ -1,7 +1,6 @@
 import {Resolver, ObjectType, Field, Query} from "type-graphql"
-import {InjectManager} from "typeorm-typedi-extensions"
 import {EntityManager} from "typeorm"
-import {Contribution, Contributor} from "../generated/model"
+import {Contribution, Contributor} from "./generated/model"
 
 @ObjectType()
 export class ReferralCodeCount {
@@ -24,7 +23,7 @@ export class Metrics {
   totalContributors!: number
   @Field(() => String, { nullable: false })
   totalAmountContributed!: String
-  @Field(() => ReferralCodeCount, { nullable: false })
+  @Field(() => [ReferralCodeCount], { nullable: false })
   referralCodeCount!: ReferralCodeCount[]
 
 
@@ -40,17 +39,19 @@ export class Metrics {
 @Resolver()
 export class MetricsResolver {
   constructor(
-    @InjectManager() private db: EntityManager
+    private tx: () => Promise<EntityManager>
   ) {}
 
   @Query(() => Metrics)
   async metrics(): Promise<Metrics> {
-    let count = await this.db.getRepository(Contribution).createQueryBuilder().getCount()
-    let indCount = await this.db.getRepository(Contributor).createQueryBuilder().getCount()
+    const tx = await this.tx()
+
+    let count = await tx.getRepository(Contribution).createQueryBuilder().getCount()
+    let indCount = await tx.getRepository(Contributor).createQueryBuilder().getCount()
     let stringQuery = "SELECT SUM(balance) from contribution"
-    let totalAmountContributed = await this.db.getRepository(Contribution).query(stringQuery)
+    let totalAmountContributed = await tx.getRepository(Contribution).query(stringQuery)
     let topReferrersStringQuery = "SELECT referral_code, COUNT(referral_code) as referral_count from contribution WHERE referral_code IS NOT NULL GROUP BY referral_code ORDER BY referral_count DESC"
-    let topReferrersResult = await this.db.getRepository(Contribution).query(topReferrersStringQuery)
+    let topReferrersResult = await tx.getRepository(Contribution).query(topReferrersStringQuery)
     return new Metrics(count, indCount, totalAmountContributed[0].sum, topReferrersResult)
   }
 }

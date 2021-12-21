@@ -1,20 +1,26 @@
-FROM node:14 AS processor
-WORKDIR /hydra-project
+FROM node:14 AS builder
+WORKDIR /hydra-build
 ADD package.json .
 ADD package-lock.json .
 RUN npm ci
 ADD tsconfig.json .
+ADD src src
+RUN npm run build
+
+
+FROM node:14 AS processor
+WORKDIR /hydra-project
+ADD package.json .
+ADD package-lock.json .
+RUN npm ci # TODO: --production
+COPY --from=builder /hydra-build/lib lib
 ADD db db
-ADD generated generated
-ADD mappings mappings
-ADD chain chain
-ADD server-extension server-extension
-RUN npx tsc
 ADD manifest.yml .
+ADD schema.graphql .
 ADD .env .
-ENV HYDRA_NO_TS=true
-CMD [ "npm", "run", "processor:start"]
+ADD altair-contributions.json .
+CMD ["npm", "run", "processor:start"]
 
 
 FROM processor AS query-node
-CMD ["node", "./generated/server/index.js"]
+CMD ["node", "./lib/generated/server.js"]

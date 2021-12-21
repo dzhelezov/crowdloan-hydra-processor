@@ -1,9 +1,8 @@
-import BN from 'bn.js'
 import { DatabaseManager, EventContext, StoreContext } from '@subsquid/hydra-common'
 import { Contribution, Contributor } from '../generated/model'
-import { Contributions } from '../chain'
+import { Crowdloan } from '../types'
 
-const altairContributions = require('./altair-contributions.json')
+const altairContributions = require('../../altair-contributions.json')
 
 const PARA_ID = 2031;
 const CRWD_START = 8146654;
@@ -15,7 +14,7 @@ export async function processContribution({
   block,
   extrinsic,
 }: EventContext & StoreContext): Promise<void> {
-  const [from, paraID, value] = new Contributions.ContributionEvent(event).params
+  const [from, paraID, value] = new Crowdloan.ContributedEvent(event).params
 
   if (Number(paraID) != PARA_ID) {
     return
@@ -23,9 +22,9 @@ export async function processContribution({
 
   console.log("Processing contribution for ", PARA_ID)
   const contributor = await getOrCreate(store, Contributor, from.toHex())
-  contributor.totalContributed = contributor.totalContributed || new BN(0)
-  contributor.totalContributed = contributor.totalContributed.add(new BN(value))
-  contributor.paraId = Number(paraID)
+  contributor.totalContributed = contributor.totalContributed || (0n)
+  contributor.totalContributed = contributor.totalContributed + value.toBigInt();
+  contributor.paraID = Number(paraID)
   contributor.countContributions = contributor.countContributions || 0;
   contributor.countContributions = contributor.countContributions + 1;
   await store.save(contributor)
@@ -33,11 +32,11 @@ export async function processContribution({
   const contribID = `${from.toHex()}-${extrinsic?.hash}`;
   const contribution = await getOrCreate(store, Contribution, contribID)
   contribution.account = contributor
-  contribution.balance = new BN(value)
-  contribution.blockNumber = new BN(block.height)
+  contribution.balance = value.toBigInt()
+  contribution.blockNumber = BigInt(block.height)
   contribution.extrinsicHash = extrinsic?.hash ? extrinsic?.hash : ""
   contribution.prevContributed = from.toHex() in altairContributions
-  contribution.earlyBird = new BN(block.height).cmp(new BN(CRWD_START+CRWD_EARLYBIRD_LENGTH)) < 1
+  contribution.earlyBird = (BigInt(block.height) - (BigInt(CRWD_START+CRWD_EARLYBIRD_LENGTH))) < 1
   await store.save(contribution)
 }
 
@@ -47,7 +46,7 @@ export async function processMemo({
   block,
   extrinsic,
 }: EventContext & StoreContext): Promise<void> {
-  const [from, paraID, memo] = new Contributions.MemoUpdatedEvent(event).params
+  const [from, paraID, memo] = new Crowdloan.MemoUpdatedEvent(event).params
 
   if (Number(paraID) != PARA_ID) {
     return
@@ -55,13 +54,13 @@ export async function processMemo({
 
   console.log("Processing Memo Events for ", PARA_ID)
   const contributor = await getOrCreate(store, Contributor, from.toHex())
-  contributor.paraId = Number(paraID)
+  contributor.paraID = Number(paraID)
   await store.save(contributor)
 
   const contribID = `${from.toHex()}-${extrinsic?.hash}`
   const contribution = await getOrCreate(store, Contribution, contribID)
   contribution.account = contributor
-  contribution.blockNumber = new BN(block.height)
+  contribution.blockNumber = BigInt(block.height)
   contribution.extrinsicHash = extrinsic?.hash ? extrinsic?.hash : ""
   contribution.referralCode = `${memo.toHuman()}`
   await store.save(contribution)
