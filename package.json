@@ -8,7 +8,7 @@
     "db:create": "hydra-cli db:create",
     "db:drop": "hydra-cli db:drop",
     "db:create-migration": "hydra-cli db:create-migration",
-    "db:migrate": "hydra-cli db:migrate",
+    "db:migrate": "hydra-cli db:migrate && hydra-processor migrate",
     "db:revert": "hydra-cli db:revert",
     "db:reset": "hydra-cli db:drop && hydra-cli db:create && hydra-processor migrate && hydra-cli db:migrate",
     "processor:migrate": "hydra-processor migrate",
