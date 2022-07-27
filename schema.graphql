@@ -1,18 +1,18 @@
 type Contribution @entity {
   id: ID!
   account: Contributor!
-  balance: BigInt
-  blockNumber: BigInt!
-  extrinsicHash: String!
+  balance: BigInt @index
+  blockNumber: BigInt! @index
+  extrinsicHash: String! @index
   earlyBird: Boolean
   prevContributed: Boolean
-  referralCode: String
+  referralCode: String @index
 }
 
 type Contributor @entity {
   "Account address"
   id: ID!
-  totalContributed: BigInt
+  totalContributed: BigInt @index
   paraID: Int!
   countContributions: Int
   contributions: [Contribution!] @derivedFrom(field: "account")

@@ -15,12 +15,15 @@ export class Contribution {
   @ManyToOne_(() => Contributor, {nullable: true})
   account!: Contributor
 
+  @Index_()
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
   balance!: bigint | undefined | null
 
+  @Index_()
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   blockNumber!: bigint
 
+  @Index_()
   @Column_("text", {nullable: false})
   extrinsicHash!: string
 
@@ -30,6 +33,7 @@ export class Contribution {
   @Column_("bool", {nullable: true})
   prevContributed!: boolean | undefined | null
 
+  @Index_()
   @Column_("text", {nullable: true})
   referralCode!: string | undefined | null
 }
