@@ -10,7 +10,7 @@ import { Contribution, Contributor } from "./model"
 import { toHex } from '@subsquid/util-internal-hex'
 import { isAscii, u8aToString, u8aToHex } from '@polkadot/util'
 
-const altairContributions = require('../altair-contributions.json')
+const altairContributions = require('../assets/altair-contributions.json')
 
 const PARA_ID = 2031;
 const CRWD_START = 8146654;
