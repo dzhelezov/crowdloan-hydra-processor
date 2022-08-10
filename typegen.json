@@ -1,0 +1,12 @@
+{
+  "outDir": "src/types",
+  "specVersions": "https://polkadot.archive.subsquid.io/graphql",
+  "events": [
+    "Crowdloan.Contributed",
+    "Crowdloan.MemoUpdated"
+  ],
+  "calls": [ 
+  ],
+  "storage": [
+  ]
+}

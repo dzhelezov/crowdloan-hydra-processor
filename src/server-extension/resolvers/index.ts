@@ -1,6 +1,6 @@
 import {Resolver, ObjectType, Field, Query} from "type-graphql"
 import {EntityManager} from "typeorm"
-import {Contribution, Contributor} from "./generated/model"
+import {Contribution, Contributor} from "../../model"
 
 @ObjectType()
 export class ReferralCodeCount {

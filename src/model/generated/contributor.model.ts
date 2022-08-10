@@ -1,5 +1,5 @@
-import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, OneToMany as OneToMany_} from "typeorm"
-import * as marshal from "../marshal"
+import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, Index as Index_, OneToMany as OneToMany_} from "typeorm"
+import * as marshal from "./marshal"
 import {Contribution} from "./contribution.model"
 
 @Entity_()
@@ -14,13 +14,14 @@ export class Contributor {
   @PrimaryColumn_()
   id!: string
 
+  @Index_()
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
   totalContributed!: bigint | undefined | null
 
-  @Column_("integer", {nullable: false})
+  @Column_("int4", {nullable: false})
   paraID!: number
 
-  @Column_("integer", {nullable: true})
+  @Column_("int4", {nullable: true})
   countContributions!: number | undefined | null
 
   @OneToMany_(() => Contribution, e => e.account)

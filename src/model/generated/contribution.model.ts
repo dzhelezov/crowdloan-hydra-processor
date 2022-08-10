@@ -1,5 +1,5 @@
 import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, ManyToOne as ManyToOne_, Index as Index_} from "typeorm"
-import * as marshal from "../marshal"
+import * as marshal from "./marshal"
 import {Contributor} from "./contributor.model"
 
 @Entity_()
@@ -12,17 +12,18 @@ export class Contribution {
   id!: string
 
   @Index_()
-  @ManyToOne_(() => Contributor, {nullable: false})
+  @ManyToOne_(() => Contributor, {nullable: true})
   account!: Contributor
 
-  @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
   @Index_()
+  @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: true})
   balance!: bigint | undefined | null
 
-  @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   @Index_()
+  @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   blockNumber!: bigint
 
+  @Index_()
   @Column_("text", {nullable: false})
   extrinsicHash!: string
 
@@ -32,6 +33,7 @@ export class Contribution {
   @Column_("bool", {nullable: true})
   prevContributed!: boolean | undefined | null
 
+  @Index_()
   @Column_("text", {nullable: true})
   referralCode!: string | undefined | null
 }
