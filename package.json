@@ -5,7 +5,7 @@
     "build": "rm -rf lib && tsc",
     "db:migrate": "npx squid-typeorm-migration apply",
     "processor:start": "node lib/processor.js",
-    "query-node:start": "squid-graphql-server --subscriptions --dumb-cache in-memory --dumb-cache-ttl 1000 --dumb-cache-size 100 --dumb-cache-max-age 1000"
+    "query-node:start": "squid-graphql-server --subscriptions --dumb-cache in-memory --dumb-cache-ttl 10000 --dumb-cache-size 100 --dumb-cache-max-age 10000"
   },
   "dependencies": {
     "@polkadot/util": "^10.1.9",
